@@ -1,4 +1,11 @@
-// lexer.js
+import { Error_t } from "../util/util.js";
+
+// IG these are basically enums in js
+export const lex_error = Object.freeze({
+  FUNCTION_BODY: 'function body',
+});
+
+const error = new Error_t(lex_error);
 
 export class Lexer {
     constructor(input) {
@@ -8,8 +15,7 @@ export class Lexer {
         this.input = input;
     }
 
-    // Example method
-    readChar() {
+    read_char() {
         if (this.read_position >= this.input.length) {
             this.ch = 0;
         } else {
@@ -18,6 +24,10 @@ export class Lexer {
         this.read_position++;
     }
 
-    // Add more methods as necessary...
+    lex() {
+        error.type = lex_error.FUNCTION_BODY;
+        error.data = "this is crazy";
+        return error;
+    }
 }
 

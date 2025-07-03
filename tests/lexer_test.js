@@ -1,5 +1,6 @@
 // Import the class to test
-import { Lexer } from "../src/lexer/lexer.js";
+import { Lexer, lex_error } from "../src/lexer/lexer.js";
+import { Error_t } from "../src/util/util.js";
 
 const input = await Deno.readTextFile("./6502/simple.cade");
 
@@ -8,10 +9,15 @@ Deno.test("Lexer reads characters", () => {
 
     const lexer = new Lexer(input);
     
-    lexer.readChar();  // Should set `lexer.ch` to 'L'
-    
-    // Assertions
-    if (lexer.ch !== 'L') {
-        throw new Error(`Expected 'L', got '${lexer.ch}'`);
+    const error = lexer.lex();  
+
+    if (error.ok) {
+        return;
+    }
+    else {
+        switch (error.type) {
+            case lex_error.FUNCTION_BODY:
+                throw error; break;
+        }
     }
 });
